@@ -1,0 +1,30 @@
+{
+  "name": "endpoint-base",
+  "version": "1.0.0",
+  "description": "Node endpoint base",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.5.0",
+    "body-parser": "^1.15.1",
+    "express": "^4.15.3",
+    "lodash": "^4.13.1",
+    "mongodb": "^2.2.29",
+    "morgan": "^1.8.1",
+    "mysql": "^2.13.0",
+    "n": "^2.1.7",
+    "pm2": "^2.8.0",
+    "request": "2.81.0",
+    "request-as-curl": "^0.1.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ik/I+D",
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:ikflowdat/extra.git"
+  },
+  "license": "ISC"
+}

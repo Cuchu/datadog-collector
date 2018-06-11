@@ -1,0 +1,9 @@
+const userMongo = 'userMongo';
+const passMongo = 'passMongo';
+const dbName = 'dbName';
+const hostMongo = '127.0.0.1';
+const portMongo = '27017';
+
+module.exports = {
+    connectionMongo : `mongodb://${userMongo}:${passMongo}@${hostMongo}:${portMongo}/${dbName}`
+};
