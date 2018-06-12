@@ -1,4 +1,5 @@
 endpoint/node_modules
+endpoint/config.js
 server/node_modules
 server/config.js
 server/tmp

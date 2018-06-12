@@ -1,0 +1,20 @@
+const userMongo = 'userMongo';
+const passMongo = 'passMongo';
+const dbName = 'dbName';
+const hostMongo = '127.0.0.1';
+const portMongo = '27017';
+
+const debug = true;
+
+const simpleJsonPort = '8000';
+const simpleJsonMongoPort = '8001';
+const host = '127.0.0.1';
+const hosts = [`http://${host}:${simpleJsonMongoPort}`]; //endpoints
+
+module.exports = {
+    connectionMongo : `mongodb://${userMongo}:${passMongo}@${hostMongo}:${portMongo}/${dbName}`,
+    hosts : hosts,
+    simpleJsonPort : simpleJsonPort,
+    simpleJsonMongoPort : simpleJsonMongoPort,
+    debug : debug
+};

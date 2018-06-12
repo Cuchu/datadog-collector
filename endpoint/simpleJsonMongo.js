@@ -7,19 +7,10 @@ var _ = require('lodash');
 var app = express();
 var curlify = require('request-as-curl');
 
-var mongo = require('mongodb'),
-    MongoClient = mongo.MongoClient,
-    util = require('util'),
-    dbs = {},
-    options = {
-            debug: false,
-            prefix: true,
-            size: 10000,
-            max: 261000,
-            name: 'dbName',
-            host: 'mongoUser:mongoPass@127.0.0.1:27017',
-            port: 27017
-    };
+var mongo = require('mongodb');
+var MongoClient = mongo.MongoClient;
+
+const config = require('./config');
 
 app.use(morgan('combined'));
 app.use(bodyParser.json());
@@ -39,21 +30,19 @@ app.all('/', function(req, res) {
 
 app.all('/search', function (req, res) {
     console.log(curlify(req, req.body));
-    mongo.connect("mongodb://" + options.host + "/" + options.name, function (err, db) {
+    mongo.connect(config.connectionMongo, function (err, db) {
         if (err) {
-            console.log(err);
-	    res.status(500).send(reason);
+    	    res.status(500).send(reason);
         }
-        if (options.debug) {
+        if (config.debug) {
             console.log("Connected successfully to server");
         }
-	console.log(req.body.target);
+	    
         db.listCollections().toArray(function(err, collInfos) {
             var mongo_search_result = [];
             _.each(collInfos, function(collInfo) {
 
 		        var names = collInfo.name.split(".");
-		        //names.shift();
 		        names = names.join(".");
                 if ( names.indexOf(req.body.target) !== -1 && mongo_search_result.indexOf(names) === -1) {
                     mongo_search_result.push(names);
@@ -80,7 +69,7 @@ app.all('/query', function (req, res) {
     var interval = req.body.intervalMs / 1000;
     var maxDataPoints = req.body.maxDataPoints;
 
-    mongo.connect("mongodb://" + options.host + "/" + options.name, function (err, db) {
+    mongo.connect(config.connectionMongo, function (err, db) {
         if (err) {console.log(err);}
 //        https://docs.mongodb.com/manual/reference/method/db.collection.find/#db.collection.find
 	    var collections = []
@@ -107,13 +96,11 @@ app.all('/query', function (req, res) {
                     var result = {};
                     console.log("query success " + coll.coll + " found " + docs.length);
 
-                    result[coll.name] = new Array();
                     var name = coll.name;
+                    result[name] = new Array();
 
                     console.time('loop');
-                    docs.forEach(function(doc) {
-                        result[name].push([doc.value, 1000 * doc.timestamp]);
-                    });
+                    docs.forEach(function(doc) {result[name].push([doc.value, 1000 * doc.timestamp]);});
                     console.timeEnd('loop');
 
                     var data = {target: name, datapoints: result[name]};
@@ -138,6 +125,6 @@ app.all('/query', function (req, res) {
 	});
 });
 
-app.listen(8001);
+app.listen(config.simpleJsonMongoPort);
 
-console.log("Server is listening to port 8001");
+console.log(`Server is listening to port ${config.simpleJsonMongoPort}`);

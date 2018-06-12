@@ -7,10 +7,11 @@ var app = express();
 var curlify = require('request-as-curl');
 var rp = require('request-promise-native');
 
+const config = require('./config');
+
 var timeout = process.env.TIMEOUT;
 
-//var hosts = ['http://jsonep_mysql:8000', 'http://jsonep_mongo:8000'];
-var hosts = ['http://127.0.0.1:8001'];
+var hosts = config.hosts;
 
 app.use(morgan('combined'));
 app.use(bodyParser.json());
@@ -30,18 +31,11 @@ app.all('/', function(req, res) {
 
 var search_result = [];
 app.all('/search', function(req, res) {
-    //console.log(curlify(req, req.body));
     search_result = [];
 
     var results = hosts.map(
         function(host, index) {
-            var options = {
-                method: 'POST',
-                uri: host + '/search',
-                body: req.body,
-                timeout: timeout,
-                json: true
-            };
+            var options = {method: 'POST',uri: host + '/search',body: req.body,timeout: timeout,json: true};
 
             return rp(options)
                 .then(function(parsedBody) {
@@ -76,17 +70,10 @@ app.all('/search', function(req, res) {
 });
 
 app.all('/query', function(req, res) {
-    //console.log(curlify(req, req.body));
     var query_result = [];
 
     var results = hosts.map(function(host) {
-        var options = {
-            method: 'POST',
-            uri: host + '/query',
-            body: req.body,
-            timeout: timeout,
-            json: true
-        };
+        var options = {method: 'POST',uri: host + '/query',body: req.body,timeout: timeout,json: true};
 
         return rp(options).then(function(parsedBody) {
             var c;
@@ -116,11 +103,10 @@ app.all('/query', function(req, res) {
         res.json(query_result);
         res.end();
     }, reason => {
-        //console.log(reason);
         res.status(500).send(reason);
     });
 });
 
-app.listen(8000);
+app.listen(config.simpleJsonPort);
 
-console.log("Server is listening to port 8000");
+console.log(`Server is listening to port ${config.simpleJsonPort}`);
