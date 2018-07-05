@@ -1,7 +1,7 @@
 const userMongo = 'userMongo';
 const passMongo = 'passMongo';
 const dbName = 'dbName';
-const hostMongo = '127.0.0.1';
+const hostMongo = 'mongo';
 const portMongo = '27017';
 
 module.exports = {
