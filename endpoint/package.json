@@ -19,12 +19,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "ik/I+D",
-  "repository": {
-    "type": "git",
-    "url": "git@bitbucket.org:ikflowdat/extra.git"
+    "start_one": "node simpleJson.js",
+    "start_two": "node simpleJsonMongo.js"
   },
   "license": "ISC"
 }
