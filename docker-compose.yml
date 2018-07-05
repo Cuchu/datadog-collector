@@ -12,7 +12,7 @@ services:
     ports:
       - '27017:27017'
     volumes:  
-      - ./mongo_grafana/mongodb:/data/db
+      - ./mongodb:/data/db
 
   mongo-express:
     image: mongo-express

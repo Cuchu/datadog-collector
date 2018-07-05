@@ -4,4 +4,4 @@ server/node_modules
 server/config.js
 server/tmp
 test.js
-mongo_grafana/mongodb
+mongodb
